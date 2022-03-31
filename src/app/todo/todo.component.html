@@ -1,0 +1,24 @@
+<input
+  class="new-todo"
+  placeholder="What need to be done?"
+  id="input"
+  [(ngModel)]="value"
+  (keydown.enter)="addNewToDo()"
+/>
+
+<section class="main">
+  <input id="check-all" class="check-all" type="checkbox" />
+  <label class="hidden" id="label-check-all">Mark all as complete</label>
+  <ul id="todo-list" class="todo-list" *ngFor="let todo of listToDo; let i = index">
+      <li>
+          <div class="view">
+              <input class="check" type="checkbox"
+              [(ngModel)]="todo.status"
+              (click)="updateStatus(i)">
+              <label contenteditable="true">{{todo.name}}</label>
+              <button class="remove" (click)="deleteToDo(i)" ></button>
+           </div>
+      </li>
+  </ul>
+</section>
+

@@ -1,0 +1,17 @@
+
+
+  <div class="footer-section" id="footer">
+    <span class="count"><strong id="item-left">{{this.count}}</strong> items left</span>
+    <ul class="filters">
+      <li class="mr-3">
+        <a id="find-all" class="selected filtro" (click)="findAllToDo()" >All</a>
+      </li>
+      <li class="mr-3">
+        <a id="find-active" class="filtro" (click)="findToDoActive()" >Active</a>
+      </li>
+      <li class="mr-3">
+        <a id="find-complete" class="filtro" (click)="findToDoComplete()" >Completed</a>
+      </li>
+    </ul>
+    <button class="clear-completed hidden" id="clear-completed">Clear completed</button>
+  </div>
