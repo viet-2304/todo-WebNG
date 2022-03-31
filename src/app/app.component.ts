@@ -12,8 +12,5 @@ export class AppComponent {
     
   }
 
-  
-
-
   title = 'todoApp';
 }
