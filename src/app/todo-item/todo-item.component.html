@@ -1,0 +1,10 @@
+<ul id="todo-list" class="todo-list">
+  <li>
+    <div class="view">
+      <input class="check" type="checkbox" [(ngModel)]="todoItem.status" />
+      <label contenteditable="true">{{ todoItem.name }}</label>
+
+      <button class="remove" (click)="deleteToDo(index)"></button>
+    </div>
+  </li>
+</ul>

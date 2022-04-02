@@ -1,39 +1,39 @@
 import { Component, OnInit } from '@angular/core';
-import { todo } from './todo.model';
-import { todoService } from './todo.service';
+import { Todo } from './todo.model';
+
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
   styleUrls: ['./todo.component.scss'],
 })
 export class ToDoComponent implements OnInit {
-  value: string = '';
-  isEdit: boolean = false;
-  listToDo: todo[] = [];
-  selectToDo: string = '';
+  value: string;
+  isEdit: boolean;
+  listToDo: Todo[];
+  selectToDo: string;
 
-  constructor(private todoservice: todoService) {}
+  constructor() {}
   ngOnInit(): void {
     this.selectToDo = 'all';
-    // this.updateToDo();
+    this.listToDo = [];
+    this.isEdit = false;
+    this.value = '';
   }
 
   addNewToDo(): void {
     if (this.value.trim().length == 0) {
       return;
     }
-    this.listToDo.push(new todo(this.value, false));
+    this.listToDo.push(new Todo(this.value, false));
     this.value = '';
   }
 
-  editToDo(index: number) {}
   updateStatus(index: number) {
     this.listToDo[index].status = !this.listToDo[index].status;
-    console.log(this.listToDo);
   }
 
   deleteToDo(index: number): void {
-    this.todoservice.deleteToDo(index);
+    this.listToDo.splice(index, 1);
   }
 
   toDoLeft(): number {
@@ -62,10 +62,9 @@ export class ToDoComponent implements OnInit {
 
   clearComplete(): void {
     this.listToDo = this.listToDo.filter((todo) => !todo.status);
-    console.log(this.listToDo);
   }
 
-  setSelectToDo(): todo[] {
+  setSelectToDo(): Todo[] {
     if (this.selectToDo == 'all') {
       return this.listToDo;
     } else if (this.selectToDo == 'active') {

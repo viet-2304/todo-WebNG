@@ -3,21 +3,20 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
-import { FooterComponent } from './footer/footer.component';
 import { ToDoComponent } from './todo/todo.component';
-import { todoService } from './todo/todo.service';
+import { TodoItemComponent } from './todo-item/todo-item.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FooterComponent,
-    ToDoComponent
+    ToDoComponent,
+    TodoItemComponent
   ],
   imports: [
     FormsModule,
     BrowserModule
   ],
-  providers: [todoService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
