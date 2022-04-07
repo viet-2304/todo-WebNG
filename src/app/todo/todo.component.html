@@ -1,89 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Todo App</title>
+<body>
+  <section class="todo">
+    <h1>ToDos</h1>
 
-    <title>Todo App</title>
-  </head>
-  <body>
-    <section class="todo">
-      <h1>ToDos</h1>
+    <input
+      class="new-todo"
+      placeholder="What need to be done?"
+      id="input"
+      [(ngModel)]="value"
+      (keydown.enter)="addNewToDo()"
+    />
 
-      <input
-        class="new-todo"
-        placeholder="What need to be done?"
-        id="input"
-        [(ngModel)]="value"
-        (keydown.enter)="addNewToDo()"
-      />
+    <section class="main">
+      <input id="check-all" class="check-all" type="checkbox" />
+      <label *ngIf="checkIfToDo()" (click)="completeAll()" id="label-check-all"
+        >Mark all as complete</label
+      >
 
-      <section class="main">
-        <input id="check-all" class="check-all" type="checkbox" />
-        <label
-          *ngIf="checkIfToDo()"
-          (click)="completeAll()"
-          id="label-check-all"
-          >Mark all as complete</label
-        >
-
-        <app-todo-item
-          *ngFor="let todo of setSelectToDo(); let i = index"
-          [todoItem]="todo"
-          [index]="i"
-          (deleteItem)="deleteToDo($event)"
-        ></app-todo-item>
-      </section>
-
-      <div *ngIf="checkIfToDo()" class="footer-section" id="footer">
-        <span class="count"
-          ><strong id="item-left">{{ toDoLeft() }}</strong> items left</span
-        >
-        <ul class="filters">
-          <li class="mr-3">
-            <a
-              id="find-all"
-              class="selected filtro"
-              (click)="selectToDo = 'all'"
-              >All</a
-            >
-          </li>
-          <li class="mr-3">
-            <a id="find-active" class="filtro" (click)="selectToDo = 'active'"
-              >Active</a
-            >
-          </li>
-          <li class="mr-3">
-            <a
-              id="find-complete"
-              class="filtro"
-              (click)="selectToDo = 'complete'"
-              >Completed</a
-            >
-          </li>
-        </ul>
-        <div *ngIf="checkToDoLeft()">
-          <button
-            class="clear-completed"
-            id="clear-completed"
-            (click)="clearComplete()"
-          >
-            Clear completed
-          </button>
-        </div>
-      </div>
+      <app-todo-item
+        *ngFor="let todo of setSelectToDo(); let i = index"
+        [todoItem]="todo"
+        [index]="i"
+        (deleteItem)="deleteToDo($event)"
+        (updateStatus)="updateStatus($event)"
+        (updateName)="updateName($event)"
+      ></app-todo-item>
     </section>
 
-    <footer class="contact">
-      <p>Double-click to edit a todo</p>
-      <p>
-        Create by <a href="#">Preston Sego</a> -
-        <a href="#">@NullVoxPopuli</a>
-      </p>
-      <p>Part of <a href="#">ToDoMVC</a></p>
-    </footer>
+    <div *ngIf="checkIfToDo()" class="footer-section" id="footer">
+      <span class="count"
+        ><strong id="item-left">{{ toDoLeft }}</strong> items left</span
+      >
+      <ul class="filters">
+        <li class="mr-3">
+          <a id="find-all" class="selected filtro" (click)="selectToDo = 'all'"
+            >All</a
+          >
+        </li>
+        <li class="mr-3">
+          <a id="find-active" class="filtro" (click)="selectToDo = 'active'"
+            >Active</a
+          >
+        </li>
+        <li class="mr-3">
+          <a id="find-complete" class="filtro" (click)="selectToDo = 'complete'"
+            >Completed</a
+          >
+        </li>
+      </ul>
+      <div *ngIf="checkToDoLeft()">
+        <button
+          class="clear-completed"
+          id="clear-completed"
+          (click)="clearComplete()"
+        >
+          Clear completed
+        </button>
+      </div>
+    </div>
+  </section>
 
-    <script type="module" src="../dist/index.js"></script>
-  </body>
-</html>
+  <footer class="contact">
+    <p>Double-click to edit a todo</p>
+    <p>
+      Create by <a href="#">Preston Sego</a> -
+      <a href="#">@NullVoxPopuli</a>
+    </p>
+    <p>Part of <a href="#">ToDoMVC</a></p>
+  </footer>
+</body>

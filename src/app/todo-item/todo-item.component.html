@@ -1,10 +1,23 @@
 <ul id="todo-list" class="todo-list">
   <li>
-    <div class="view">
-      <input class="check" type="checkbox" [(ngModel)]="todoItem.status" />
+    <div class="view" *ngIf="!todoItem.isEdit" (dblclick)="setEdit()">
+      <input
+        class="check"
+        type="checkbox"
+        (click)="setStatus(index)"
+        [(ngModel)]="todoItem.status"
+      />
       <label contenteditable="true">{{ todoItem.name }}</label>
-
       <button class="remove" (click)="deleteToDo(index)"></button>
+    </div>
+    <div class="view" *ngIf="todoItem.isEdit">
+      <input
+        autofocus
+        type="text"
+        class="editing"
+        (keydown.Enter)="setName()"
+        [(ngModel)]="todoItem.name"
+      />
     </div>
   </li>
 </ul>
