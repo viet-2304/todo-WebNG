@@ -5,8 +5,13 @@ export class Todos {
 
   inItData(): Todo[] {
     const data = JSON.parse(localStorage.getItem('todos')!);
-    this.listTodo = data;
-    return data;
+    if (data == null) {
+      this.listTodo = [];
+    }
+    else {
+      this.listTodo = data;
+    }
+    return this.listTodo;
   }
 
   addToDo(newTodo: Todo): void {
