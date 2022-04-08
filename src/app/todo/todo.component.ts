@@ -1,78 +1,92 @@
 import { Component, OnInit } from '@angular/core';
-import { todo } from './todo.model';
-import { todoService } from './todo.service';
+import { Todo } from './todo.model';
+import { Todos } from '../todos.model';
+
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
   styleUrls: ['./todo.component.scss'],
 })
 export class ToDoComponent implements OnInit {
-  value: string = '';
-  isEdit: boolean = false;
-  listToDo: todo[] = [];
-  selectToDo: string = '';
+  value: string;
+  isEdit: boolean;
+  selectToDo: string;
+  todoList: Todos;
+  toDoLeft: number;
 
-  constructor(private todoservice: todoService) {}
+  constructor() {}
+
   ngOnInit(): void {
     this.selectToDo = 'all';
-    // this.updateToDo();
+    this.todoList = new Todos();
+    this.getData();
+    this.isEdit = false;
+    this.value = '';
+    this.toDoLeft = this.todoList.toDoLeft();
+  }
+
+  getData() {
+    const data = this.todoList.inItData();
   }
 
   addNewToDo(): void {
     if (this.value.trim().length == 0) {
       return;
     }
-    this.listToDo.push(new todo(this.value, false));
+    this.todoList.addToDo(new Todo(this.value, false));
     this.value = '';
+    this.setCount();
   }
 
-  editToDo(index: number) {}
   updateStatus(index: number) {
-    this.listToDo[index].status = !this.listToDo[index].status;
-    console.log(this.listToDo);
+    this.todoList.updateStatus(index);
+    this.setCount();
+  }
+
+  updateName(text: string) {
+    this.todoList.updateName();
   }
 
   deleteToDo(index: number): void {
-    this.todoservice.deleteToDo(index);
+    this.todoList.deleteTodo(index);
+    this.setCount();
   }
 
-  toDoLeft(): number {
-    return this.listToDo.filter((todo) => !todo.status).length;
+  setCount() {
+    this.toDoLeft = this.todoList.toDoLeft();
   }
 
   checkToDoLeft(): boolean {
-    return this.listToDo.filter((todo) => todo.status).length > 0;
+    return this.todoList.checkToDoLeft();
   }
 
   checkIfToDo(): boolean {
-    return this.listToDo.length > 0;
+    return this.todoList.checkIfToDo();
   }
 
-  completeAll() {
-    if (this.toDoLeft() == 0) {
-      this.listToDo.forEach((todo) => {
-        todo.status = false;
-      });
+  completeAll(): void {
+    if (this.toDoLeft == 0) {
+      this.todoList.activeAllToDo();
     } else {
-      this.listToDo.forEach((todo) => {
-        todo.status = true;
-      });
+      this.todoList.completeAllTodo();
     }
+    this.setCount();
   }
 
   clearComplete(): void {
-    this.listToDo = this.listToDo.filter((todo) => !todo.status);
-    console.log(this.listToDo);
+    this.todoList.clearTodos();
+    this.getData();
+    this.setCount();
   }
 
-  setSelectToDo(): todo[] {
+  setSelectToDo(): Todo[] {
     if (this.selectToDo == 'all') {
-      return this.listToDo;
+      return this.todoList.getAllTodos();
     } else if (this.selectToDo == 'active') {
-      return this.listToDo.filter((todo) => !todo.status);
+      return this.todoList.getTodosActive();
     } else if (this.selectToDo == 'complete') {
-      return this.listToDo.filter((todo) => todo.status);
+      return this.todoList.getTodosComplete();
     }
-    return this.listToDo;
+    return this.todoList.getAllTodos();
   }
 }
