@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Todo } from '../todo/todo.model';
-import { Todos } from '../todos.model';
 
 @Component({
   selector: 'app-todo-item',
@@ -8,29 +7,29 @@ import { Todos } from '../todos.model';
   styleUrls: ['./todo-item.component.scss'],
 })
 export class TodoItemComponent implements OnInit {
-  @Input() todoItem: Todo;
-  @Input() index: number;
-  @Output() deleteItem = new EventEmitter();
-  @Output() updateStatus = new EventEmitter();
-  @Output() updateName = new EventEmitter();
+  @Input() public todoItem: Todo;
+  @Input() public index: number;
+  @Output() public deleteItem = new EventEmitter();
+  @Output() public updateStatus = new EventEmitter();
+  @Output() public updateName = new EventEmitter();
 
   constructor() {}
 
   ngOnInit(): void {}
 
-  setStatus(index: number) {
+  public setStatus(index: number): void {
     this.updateStatus.emit(index);
   }
 
-  setEdit() {
+  public setEdit(): void {
     this.todoItem.isEdit = true;
   }
 
-  deleteToDo(index: number): void {
+  public deleteToDo(index: number): void {
     this.deleteItem.emit(index);
   }
 
-  setName() {
+  public setName(): void {
     this.todoItem.isEdit = false;
     let text = this.todoItem.name;
     this.updateName.emit(text);

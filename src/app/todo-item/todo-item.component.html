@@ -7,7 +7,7 @@
         (click)="setStatus(index)"
         [(ngModel)]="todoItem.status"
       />
-      <label contenteditable="true">{{ todoItem.name }}</label>
+      <label>{{ todoItem.name }}</label>
       <button class="remove" (click)="deleteToDo(index)"></button>
     </div>
     <div class="view" *ngIf="todoItem.isEdit">

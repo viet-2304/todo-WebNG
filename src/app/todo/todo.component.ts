@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo } from './todo.model';
-import { Todos } from '../todos.model';
 
 @Component({
   selector: 'app-todo',
@@ -8,85 +7,99 @@ import { Todos } from '../todos.model';
   styleUrls: ['./todo.component.scss'],
 })
 export class ToDoComponent implements OnInit {
-  value: string;
-  isEdit: boolean;
-  selectToDo: string;
-  todoList: Todos;
-  toDoLeft: number;
+  private listTodo: Todo[];
+  public value: string;
+  public selectToDo: string;
+  public toDoLeft: number;
 
   constructor() {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.selectToDo = 'all';
-    this.todoList = new Todos();
-    this.getData();
-    this.isEdit = false;
+    this.inItData();
     this.value = '';
-    this.toDoLeft = this.todoList.toDoLeft();
   }
 
-  getData() {
-    const data = this.todoList.inItData();
+  public inItData(): Todo[] {
+    const data = JSON.parse(localStorage.getItem('todos')!);
+    if (data == null) {
+      this.listTodo = [];
+    } else {
+      this.listTodo = data;
+      this.toDoLeft = this.listTodo.filter((todo) => !todo.status).length;
+    }
+    return this.listTodo;
   }
 
-  addNewToDo(): void {
+  public addNewToDo(): void {
     if (this.value.trim().length == 0) {
       return;
     }
-    this.todoList.addToDo(new Todo(this.value, false));
+    this.listTodo.push(new Todo(this.value, false));
+    this.saveData();
     this.value = '';
     this.setCount();
   }
 
-  updateStatus(index: number) {
-    this.todoList.updateStatus(index);
+  public updateStatus(index: number): void {
+    this.listTodo[index].status = !this.listTodo[index].status;
+    this.saveData();
     this.setCount();
   }
 
-  updateName(text: string) {
-    this.todoList.updateName();
+  public updateName(text: string): void {
+    this.saveData();
   }
 
-  deleteToDo(index: number): void {
-    this.todoList.deleteTodo(index);
+  public deleteToDo(index: number): void {
+    this.listTodo.splice(index, 1);
+    this.saveData();
     this.setCount();
   }
 
-  setCount() {
-    this.toDoLeft = this.todoList.toDoLeft();
+  public setCount(): void {
+    this.toDoLeft = this.listTodo.filter((todo) => !todo.status).length;
   }
 
-  checkToDoLeft(): boolean {
-    return this.todoList.checkToDoLeft();
+  public checkToDoLeft(): boolean {
+    return this.listTodo.filter((todo) => todo.status).length > 0;
   }
 
-  checkIfToDo(): boolean {
-    return this.todoList.checkIfToDo();
+  public checkIfToDo(): boolean {
+    return this.listTodo.length > 0;
   }
 
-  completeAll(): void {
+  public completeAll(): void {
     if (this.toDoLeft == 0) {
-      this.todoList.activeAllToDo();
+      this.listTodo.forEach((element) => {
+        element.status = false;
+      });
     } else {
-      this.todoList.completeAllTodo();
+      this.listTodo.forEach((element) => {
+        element.status = true;
+      });
     }
     this.setCount();
   }
 
-  clearComplete(): void {
-    this.todoList.clearTodos();
-    this.getData();
+  public clearComplete(): void {
+    this.listTodo = this.listTodo.filter((todo) => !todo.status);
+    this.saveData();
     this.setCount();
   }
 
-  setSelectToDo(): Todo[] {
+  public setSelectToDo(): Todo[] {
     if (this.selectToDo == 'all') {
-      return this.todoList.getAllTodos();
+      return this.listTodo;
     } else if (this.selectToDo == 'active') {
-      return this.todoList.getTodosActive();
+      return this.listTodo.filter((todo) => !todo.status);
     } else if (this.selectToDo == 'complete') {
-      return this.todoList.getTodosComplete();
+      return this.listTodo.filter((todo) => todo.status);
     }
-    return this.todoList.getAllTodos();
+    return this.listTodo;
+  }
+
+  private saveData(): void {
+    localStorage.setItem('todos', JSON.stringify(this.listTodo));
   }
 }
