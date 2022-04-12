@@ -6,16 +6,12 @@ import { Todo } from '../todo/todo.model';
   templateUrl: './todo-item.component.html',
   styleUrls: ['./todo-item.component.scss'],
 })
-export class TodoItemComponent implements OnInit {
+export class TodoItemComponent {
   @Input() public todoItem: Todo;
   @Input() public index: number;
-  @Output() public deleteItem = new EventEmitter();
-  @Output() public updateStatus = new EventEmitter();
-  @Output() public updateName = new EventEmitter();
-
-  constructor() {}
-
-  ngOnInit(): void {}
+  @Output() public deleteItem = new EventEmitter<number>();
+  @Output() public updateStatus = new EventEmitter<number>();
+  @Output() public updateName = new EventEmitter<void>();
 
   public setStatus(index: number): void {
     this.updateStatus.emit(index);
@@ -31,7 +27,6 @@ export class TodoItemComponent implements OnInit {
 
   public setName(): void {
     this.todoItem.isEdit = false;
-    let text = this.todoItem.name;
-    this.updateName.emit(text);
+    this.updateName.emit();
   }
 }

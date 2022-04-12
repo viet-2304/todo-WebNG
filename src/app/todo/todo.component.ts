@@ -12,15 +12,13 @@ export class ToDoComponent implements OnInit {
   public selectToDo: string;
   public toDoLeft: number;
 
-  constructor() {}
-
   public ngOnInit(): void {
     this.selectToDo = 'all';
-    this.inItData();
+    this.initData();
     this.value = '';
   }
 
-  public inItData(): Todo[] {
+  public initData(): Todo[] {
     const data = JSON.parse(localStorage.getItem('todos')!);
     if (data == null) {
       this.listTodo = [];
@@ -47,7 +45,7 @@ export class ToDoComponent implements OnInit {
     this.setCount();
   }
 
-  public updateName(text: string): void {
+  public updateName(): void {
     this.saveData();
   }
 
